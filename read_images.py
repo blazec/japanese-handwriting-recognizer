@@ -71,7 +71,7 @@ def read_ETL8G_files():
             # Each file (except for the last one, which we won't use) has 5 datasets.
             # Each dataset has 956 categories and equivelantly 956 records
             for i_dataset in range(NUM_DATASETS):
-                for i_range in range(NUM_CATEGORIES):
+                for i_category in range(NUM_CATEGORIES):
                     record = read_ETL8G_record(f)
                     # In the ETL8 spec, the third position of the record (i.e. record[2]) contains "JIS typical reading".
                     kana_reading = record[2]
@@ -84,6 +84,7 @@ def read_ETL8G_files():
                     if b'.HIRA' in kana_reading or kana_reading == b'O.WO.HIR':
                         if kana_reading != b'KAI.HIRA' and kana_reading != b'HEI.HIRA':
                             np_array[HIRAGANA_READING_TO_ORDER[kana_reading], (NUM_DATASETS * file_num) -  (5 - i_dataset)] = np.array(kana_img)
+    
     np.savez_compressed('hiragana_images.npz', np_array)
 
 if __name__ == '__main__':
